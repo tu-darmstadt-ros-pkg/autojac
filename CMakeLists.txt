@@ -1,19 +1,13 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.3)
 
 project(autojac)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_BUILD_TYPE Debug)
 
-## Find catkin macros and libraries
-find_package(catkin REQUIRED)
+## Find ament macros and libraries
+find_package(ament_cmake REQUIRED)
 find_package(Eigen3 REQUIRED)
-
-include_directories(
-    include
-    ${catkin_INCLUDE_DIRS}
-    ${EIGEN3_INCLUDE_DIR}
-)
 
 # add cmake functions
 list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -21,6 +15,8 @@ include (add_doxygen_compile)
 include (add_gtest_compile)
 
 # add compile options
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+
 option(BUILD_TEST "Build tests" OFF)
 option(BUILD_DOC "Build documentation" OFF)
 option(BUILD_ALL "Build all" OFF)
@@ -30,19 +26,11 @@ if(BUILD_ALL)
   set(BUILD_DOC ON)
 endif()
 
-# setup catkin package
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  DEPENDS EIGEN3
-)
-
 ###########
 ## Build ##
 ###########
 
-
-## Specify additional locations of header files
+## Specify source and header files
 set(HEADERS
     include/${PROJECT_NAME}/dense_jacobian_symbolic.h
     include/${PROJECT_NAME}/dense_jacobian_code_gen.h
@@ -65,45 +53,50 @@ set(SOURCES
 )
 
 # setup cppad library
-# see https://answers.ros.org/question/223866/cmakecatkin-how-to-export-imported-target/
-add_library(cppad_lib SHARED IMPORTED)
-set_property(TARGET cppad_lib PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/libcppad_lib.so)
+add_library(cppad SHARED IMPORTED)
+set_property(TARGET cppad PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/libcppad_lib.so)
+
 
 # define targets
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(${PROJECT_NAME} cppad_lib ${catkin_LIBRARIES} ${CMAKE_DL_LIBS})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+LINKER_LANGUAGE CXX
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE cppad ${CMAKE_DL_LIBS})
 
-
+target_include_directories(${PROJECT_NAME} PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include>"
+    ${EIGEN3_INCLUDE_DIR}
+  )
 
 #############
 ## Install ##
 #############
-
-## Copy CppAD Lib
-file(COPY ${PROJECT_SOURCE_DIR}/lib/
-  DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_LIB_DESTINATION}
-  FILES_MATCHING PATTERN "libcppad_lib*"
+install(
+  DIRECTORY include/
+  DESTINATION include
 )
 
-install(FILES ${CPPAD_PATH} DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
-
-## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(
+  DIRECTORY
+   ${PROJECT_SOURCE_DIR}/lib/
+  DESTINATION lib
 )
 
-## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY include/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_include_directories(include)
+ament_export_dependencies(Eigen3)
 
 #############
 ## Testing ##
@@ -123,3 +116,5 @@ add_gtest_compile()
 ##########
 
 add_doxygen_compile()
+
+ament_package()

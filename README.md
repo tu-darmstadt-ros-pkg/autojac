@@ -88,16 +88,17 @@ void example()
 }
 ```
 ## Installation
-While the package is set up to be build using [catkin](http://wiki.ros.org/catkin), it has no ROS dependencies.
+While the package is set up to be build using [ament](https://design.ros2.org/articles/ament.html), it has no ROS dependencies.
 To clone and build the packages of CppAD and CppADCodeGen you can execute the install script from the top level folder.
 ```
 $ ./scripts/install_cppad_and_cppadcg.sh
 ```
-After this you can build the package using `catkin build`.
+After this you can build the package using `colcon build`.
 For using code generation the clang compiler needs to be installed. This can be done using
 ```
 $ sudo apt install clang
 ```
+This package has been developed originally using catkin as build system. You can find this version on the "catkin_version" branch.
 
 ## Future Development & Contribution
 The project during which the package was developed has been discontinued.
@@ -105,5 +106,5 @@ But in case you find bugs, typos or have suggestions for improvements feel free 
 We would especially appreciate Pull Requests fixing open issues.
 
 ## Authors
-- Felix BiemÃ¼ller
+- Felix Biemüller
 - Julian Rau
