@@ -1,0 +1,29 @@
+/** \mainpage Autojac
+
+    \section sec1 General
+    Autojac offers four wrappers for the functionality of [CppAD](https://github.com/coin-or/CppAD) and [CppADCodeGen](https://github.com/joaoleal/CppADCodeGen) to generate jacobian matrices based on a function.
+    These differ in the evaluation method and the representation of the jacobian matrix.
+    The jacobian can be evaluated either using generated code which is significantly comuptanionaly more efficient or using symbolic evaluation which avoids the overhead of generating and compiling the code.
+    Furthermore, the jacobian matrix can be represented either as a dense or a sparse matrix, where the letter generally offers better performance for e.g. multiplying large matrices.
+    
+    The implementing classes are:
+    - autojac::DenseJacobianSymbolic
+    - autojac::DenseJacobianCodeGen
+    - autojac::SparseJacobianSymbolic
+    - autojac::SparseJacobianCodeGen
+    
+    
+    
+*/
+
+	
+
+/**
+ * @namespace autojac 
+ * @brief namespace of the autojac package
+ */
+
+/**
+ * @namespace autojac::test 
+ * @brief namespace of the unit tests for the autojac package
+ */
