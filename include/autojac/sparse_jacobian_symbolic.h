@@ -85,7 +85,7 @@ private:
   const size_t col_size_;
 
   CppAD::ADFun<Scalar> function_;
-  CppADEigenSparsityPatternHandler cppad_eigen_sparsity_pattern_handler_;
+  SparsityPatternHandler cppad_eigen_sparsity_pattern_handler_;
 
   CppAD::sparse_jacobian_work work_forward_;
   CppAD::sparse_jacobian_work work_reverse_;

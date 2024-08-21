@@ -13,7 +13,7 @@
 namespace autojac
 {
 /**
- * @brief Generates a CppAd function based on a function handle.
+ * @brief Generates a CppAD function based on a function handle.
  * @details Function handle type void f(const VectorXS<CppAD::AD<Scalar>>& cppad_x, VectorXS<CppAD::AD<Scalar>>& cppad_y)
  * @param function_input_dim size of the input vector
  * @param function_output_dim size of the output vector
@@ -34,7 +34,7 @@ CppAD::ADFun<Scalar> generateCppAdFunction(size_t function_input_dim, size_t fun
 }
 
 /**
- * @brief Generates a CppAd function based on a function handle.
+ * @brief Generates a CppAD function based on a function handle.
  * @details Function handle type VectorXS<CppAD::AD<Scalar>>(const VectorXS<CppAD::AD<Scalar>>& cppad_x)
  * @param function_input_dim size of the input vector
  * @param function function handle

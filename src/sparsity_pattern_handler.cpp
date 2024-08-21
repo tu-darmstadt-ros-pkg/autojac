@@ -1,6 +1,6 @@
 #include "autojac/sparsity_pattern_handler.h"
 
-void autojac::CppADEigenSparsityPatternHandler::init(int input_dim, int output_dim, const std::vector<std::set<size_t>>& sparsity)
+void autojac::SparsityPatternHandler::init(int input_dim, int output_dim, const std::vector<std::set<size_t>>& sparsity)
 {
   assert(sparsity.size() == output_dim);
 
@@ -13,19 +13,19 @@ void autojac::CppADEigenSparsityPatternHandler::init(int input_dim, int output_d
   setCppAdndexVectors(s_);
 }
 
-int autojac::CppADEigenSparsityPatternHandler::getNumberOfNonZeros() { return nnz_; }
+int autojac::SparsityPatternHandler::getNumberOfNonZeros() { return nnz_; }
 
-const std::vector<int>& autojac::CppADEigenSparsityPatternHandler::getEigenRowIndexVec() { return eigen_row_outer_index_; }
+const std::vector<int>& autojac::SparsityPatternHandler::getEigenRowIndexVec() { return eigen_row_outer_index_; }
 
-const std::vector<int>& autojac::CppADEigenSparsityPatternHandler::getEigenColIndexVec() { return eigen_col_inner_index_; }
+const std::vector<int>& autojac::SparsityPatternHandler::getEigenColIndexVec() { return eigen_col_inner_index_; }
 
-const std::vector<size_t>& autojac::CppADEigenSparsityPatternHandler::getCppAdRowIndexVec() { return cppad_row_index_; }
+const std::vector<size_t>& autojac::SparsityPatternHandler::getCppAdRowIndexVec() { return cppad_row_index_; }
 
-const std::vector<size_t>& autojac::CppADEigenSparsityPatternHandler::getCppAdColIndexVec() { return cppad_col_index_; }
+const std::vector<size_t>& autojac::SparsityPatternHandler::getCppAdColIndexVec() { return cppad_col_index_; }
 
-const std::vector<std::set<size_t>>& autojac::CppADEigenSparsityPatternHandler::getSparsityPattern() { return s_; }
+const std::vector<std::set<size_t>>& autojac::SparsityPatternHandler::getSparsityPattern() { return s_; }
 
-void autojac::CppADEigenSparsityPatternHandler::setEigenIndexVectors(const std::vector<std::set<size_t>>& s)
+void autojac::SparsityPatternHandler::setEigenIndexVectors(const std::vector<std::set<size_t>>& s)
 {
   eigen_row_outer_index_.resize(row_size_ + 1);
   eigen_col_inner_index_.reserve(nnz_);
@@ -43,7 +43,7 @@ void autojac::CppADEigenSparsityPatternHandler::setEigenIndexVectors(const std::
   }
 }
 
-void autojac::CppADEigenSparsityPatternHandler::setCppAdndexVectors(const std::vector<std::set<size_t>>& s)
+void autojac::SparsityPatternHandler::setCppAdndexVectors(const std::vector<std::set<size_t>>& s)
 {
   cppad_col_index_.reserve(nnz_);
   cppad_col_index_.clear();
@@ -60,7 +60,7 @@ void autojac::CppADEigenSparsityPatternHandler::setCppAdndexVectors(const std::v
   }
 }
 
-size_t autojac::CppADEigenSparsityPatternHandler::countNonZeros(const std::vector<std::set<size_t>>& s)
+size_t autojac::SparsityPatternHandler::countNonZeros(const std::vector<std::set<size_t>>& s)
 {
   size_t nnz_counter = 0;
   for (int i = 0; i < s.size(); i++)
@@ -70,7 +70,7 @@ size_t autojac::CppADEigenSparsityPatternHandler::countNonZeros(const std::vecto
   return nnz_counter;
 }
 
-CppAD::sparse_rc<std::vector<size_t>> autojac::CppADEigenSparsityPatternHandler::generateDiagonalPattern(size_t col_size)
+CppAD::sparse_rc<std::vector<size_t>> autojac::SparsityPatternHandler::generateDiagonalPattern(size_t col_size)
 {
   CppAD::sparse_rc<std::vector<size_t>> eye_mat_pattern(col_size, col_size, col_size);
   for (size_t i = 0; i < col_size; i++)

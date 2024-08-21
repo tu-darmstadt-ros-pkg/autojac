@@ -5,16 +5,16 @@
 namespace autojac
 {
 /**
- * @brief The CppADEigenSparsityPatternHandler class handles indexing and the sparsity pattern.
+ * @brief The EigenSparsityPatternHandler class handles indexing and the sparsity pattern.
  * @tparam Scalar a scalar type.
  */
-class CppADEigenSparsityPatternHandler
+class SparsityPatternHandler
 {
 public:
   /**
-   * @brief CppADEigenSparsityPatternHandler constructor.
+   * @brief EigenSparsityPatternHandler constructor.
    */
-  CppADEigenSparsityPatternHandler() = default;
+  SparsityPatternHandler() = default;
 
   template <typename Scalar>
   /**
@@ -63,14 +63,14 @@ public:
   const std::vector<int>& getEigenColIndexVec();
 
   /**
-   * @brief Returns a reference to a vector containing the row indices for a CppAd sparsity pattern
-   * @return row indices for a CppAd sparsity pattern
+   * @brief Returns a reference to a vector containing the row indices for a CppAD sparsity pattern
+   * @return row indices for a CppAD sparsity pattern
    */
   const std::vector<size_t>& getCppAdRowIndexVec();
 
   /**
-   * @brief Returns a reference to a vector containing the column indices for a CppAd sparsity pattern
-   * @return column` indices for a CppAd sparsity pattern
+   * @brief Returns a reference to a vector containing the column indices for a CppAD sparsity pattern
+   * @return column` indices for a CppAD sparsity pattern
    */
   const std::vector<size_t>& getCppAdColIndexVec();
 

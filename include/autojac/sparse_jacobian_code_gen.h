@@ -119,7 +119,7 @@ private:
 
   VectorXS<Scalar> jac_vector_;
 
-  CppADEigenSparsityPatternHandler cppad_eigen_sparsity_pattern_handler_;
+  SparsityPatternHandler cppad_eigen_sparsity_pattern_handler_;
 };
 
 // precompile for most common use case
